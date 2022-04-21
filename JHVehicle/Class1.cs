@@ -23,7 +23,9 @@ namespace JHVehicle
 
         public void ExitVehicleRequestHandler(Player player, InteractableVehicle vehicle, ref bool shouldAllow, ref Vector3 pendingLocation, ref float pendingYaw)
         {
-            if (vehicle.speed > Configuration.Instance.MinSpeed)
+            float speed = vehicle.speed;
+            if (Instance.Configuration.Instance.InvertIfBelow != 0 && speed < Instance.Configuration.Instance.InvertIfBelow) speed = -speed;
+            if (speed > Configuration.Instance.MinSpeed)
             {
                 Rocket.Unturned.Player.UnturnedPlayer P = Rocket.Unturned.Player.UnturnedPlayer.FromPlayer(player);
 #if DEBUG
@@ -37,7 +39,7 @@ namespace JHVehicle
                 Rocket.Unturned.Chat.UnturnedChat.Say(P, vehicle.speed+" > "+Configuration.Instance.Stances[i].Speed + " | " + (vehicle.speed > Configuration.Instance.Stances[i].Speed));
 
 #endif
-                    if (vehicle.speed > Configuration.Instance.Stances[i].Speed && (!SF || Configuration.Instance.Stances[i].Speed > Configuration.Instance.Stances[TS].Speed)) { SF = true; TS = i; }
+                    if (speed > Configuration.Instance.Stances[i].Speed && (!SF || Configuration.Instance.Stances[i].Speed > Configuration.Instance.Stances[TS].Speed)) { SF = true; TS = i; }
 #if DEBUG
             }
 #endif
@@ -53,7 +55,7 @@ namespace JHVehicle
                 }
                 if (Configuration.Instance.JustLastEffect)
                 {
-                    for (byte i = 0; i < Configuration.Instance.Effects.Count; i++) if (vehicle.speed > Configuration.Instance.Effects[i].Speed && (!SF || Configuration.Instance.Effects[i].Speed > Configuration.Instance.Effects[TS].Speed)) { SF = true; TS = i; }
+                    for (byte i = 0; i < Configuration.Instance.Effects.Count; i++) if (speed > Configuration.Instance.Effects[i].Speed && (!SF || Configuration.Instance.Effects[i].Speed > Configuration.Instance.Effects[TS].Speed)) { SF = true; TS = i; }
                     if (SF)
                     {
 #if DEBUG
@@ -75,11 +77,11 @@ namespace JHVehicle
                 {
                     bool broke = false;
                     bool bleed = false;
-                    for (byte i = 0; i < Configuration.Instance.Effects.Count; i++) if (vehicle.speed > Configuration.Instance.Effects[i].Speed) { if (Configuration.Instance.Effects[i].Bleed) bleed = true; if (Configuration.Instance.Effects[i].BreakLegs) broke = true; }
+                    for (byte i = 0; i < Configuration.Instance.Effects.Count; i++) if (speed > Configuration.Instance.Effects[i].Speed) { if (Configuration.Instance.Effects[i].Bleed) bleed = true; if (Configuration.Instance.Effects[i].BreakLegs) broke = true; }
                     if (broke) player.life.breakLegs();
                     if (bleed) P.Bleeding = true;
                 }
-                float dmg = vehicle.speed * Configuration.Instance.Multiplier;
+                float dmg = speed * Configuration.Instance.Multiplier;
                 if (Configuration.Instance.StaminaBeforeHealth)
                 {
                     float dmga = P.Stamina - dmg;
