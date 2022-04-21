@@ -5,7 +5,7 @@
         public bool JustLastEffect;
         public bool StaminaBeforeHealth;
         public byte MinSpeed;
-        public System.Int16 InvertIfBelow;
+        public int InvertIfBelow;
         public float Multiplier;
         public System.Collections.Generic.List<Stance> Stances { get; set; }
         public System.Collections.Generic.List<Effect> Effects { get; set; }
