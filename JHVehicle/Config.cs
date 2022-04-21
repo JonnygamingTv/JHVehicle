@@ -1,10 +1,11 @@
-namespace JHVehicle
+﻿namespace JHVehicle
 {
     public class Config : Rocket.API.IRocketPluginConfiguration
     {
         public bool JustLastEffect;
         public bool StaminaBeforeHealth;
         public byte MinSpeed;
+        public System.Int16 InvertIfBelow;
         public float Multiplier;
         public System.Collections.Generic.List<Stance> Stances { get; set; }
         public System.Collections.Generic.List<Effect> Effects { get; set; }
@@ -12,6 +13,7 @@ namespace JHVehicle
         {
             JustLastEffect = true;
             StaminaBeforeHealth = false;
+            InvertIfBelow = -3;
             MinSpeed = 2;
             Multiplier = 1.5f;
             Stances = new System.Collections.Generic.List<Stance>() { new Stance(5, SDG.Unturned.EPlayerStance.CROUCH), new Stance(15, SDG.Unturned.EPlayerStance.PRONE) };
