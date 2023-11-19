@@ -32,7 +32,7 @@ Jump out of vehicle at speed -> actions provided in configuration
 
 `<InvertIfBelow>0</InvertIfBelow>` if going backwards, invert.
 
-`<Multiplier>1.7</Multiplier>` Multiply speed.
+`<Multiplier>1.7</Multiplier>` Damage to give = speed multiplied with the muliplier.
 
 `<Stance Speed="2" StanceName="CROUCH" />` If going above 2 speed, crouch.
 
