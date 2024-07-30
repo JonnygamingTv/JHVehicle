@@ -23,7 +23,7 @@ namespace JHVehicle
 
         public void ExitVehicleRequestHandler(Player player, InteractableVehicle vehicle, ref bool shouldAllow, ref Vector3 pendingLocation, ref float pendingYaw)
         {
-            float speed = vehicle.speed;
+            float speed = vehicle.ReplicatedSpeed;
             if (Instance.Configuration.Instance.InvertIfBelow != 0 && speed < Instance.Configuration.Instance.InvertIfBelow) speed = -speed;
             if (speed > Configuration.Instance.MinSpeed)
             {

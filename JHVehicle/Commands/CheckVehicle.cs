@@ -27,7 +27,7 @@ namespace JHVehicle.Commands
             if (Player.IsInVehicle)
             {
                 InteractableVehicle vehicle = Player.CurrentVehicle;
-                Rocket.Unturned.Chat.UnturnedChat.Say(Player, "Speed: " + vehicle.speed + ", " + vehicle.physicsSpeed + ", " + vehicle.spedometer + ", "+ Player.Player.movement.speed + " kph");
+                Rocket.Unturned.Chat.UnturnedChat.Say(Player, "Speed: " + vehicle.ReplicatedSpeed + ", " + vehicle.ReplicatedForwardVelocity + ", " + vehicle.AnimatedForwardVelocity + ", "+ Player.Player.movement.speed + " kph");
             }
         }
     }
