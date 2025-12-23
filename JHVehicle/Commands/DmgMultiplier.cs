@@ -31,12 +31,27 @@ namespace JHVehicle.Commands
                 }
                 else
                 {
-                    float.TryParse(command[0], out JHVehicle.Instance.Configuration.Instance.Multiplier);
-                    Rocket.Unturned.Chat.UnturnedChat.Say(caller, "Updated damage multiplier to: " + JHVehicle.Instance.Configuration.Instance.Multiplier);
+                    SDG.Unturned.EEngine eng = (SDG.Unturned.EEngine)System.Enum.Parse(typeof(SDG.Unturned.EEngine), command[0]);
+                    if (!float.TryParse(command[0], out float multi))
+                    {
+                        Rocket.Unturned.Chat.UnturnedChat.Say(caller, "<engine> <multiplier, number>");
+                        return;
+                    }
+                    JHVehicle.Instance.TypeDamage[eng] = multi;
+                    EngineDmg gg = JHVehicle.Instance.Configuration.Instance.EngineDamageMultiplier.Find(g => g.Engine == eng);
+                    if(gg == null) {
+                        JHVehicle.Instance.Configuration.Instance.EngineDamageMultiplier.Add(new EngineDmg() { Engine = eng, DmgMultiplier = multi });
+                    }
+                    gg.DmgMultiplier=multi;
+                    Rocket.Unturned.Chat.UnturnedChat.Say(caller, "Updated damage multiplier for "+eng+" to: " + multi);
                 }
             }else
             {
-                Rocket.Unturned.Chat.UnturnedChat.Say(caller, "<multiplier, number>, currently: "+ JHVehicle.Instance.Configuration.Instance.Multiplier);
+                Rocket.Unturned.Chat.UnturnedChat.Say(caller, "<engine> <multiplier, number>. Currently: ");
+                foreach(EngineDmg inp in JHVehicle.Instance.Configuration.Instance.EngineDamageMultiplier)
+                {
+                    Rocket.Unturned.Chat.UnturnedChat.Say(caller, inp.Engine.ToString() + ": " + inp.DmgMultiplier.ToString());
+                }
             }
         }
     }

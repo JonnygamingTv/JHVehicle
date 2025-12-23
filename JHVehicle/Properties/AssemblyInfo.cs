@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("JHVehicle")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("JonHosting")]
 [assembly: AssemblyProduct("JHVehicle")]
 [assembly: AssemblyCopyright("Copyright © JonHosting 2022")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("JHVehicle")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

@@ -1,5 +1,6 @@
 ﻿using SDG.Unturned;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace JHVehicle
@@ -7,12 +8,14 @@ namespace JHVehicle
     public class JHVehicle : Rocket.Core.Plugins.RocketPlugin<Config>
     {
         public static JHVehicle Instance { get; private set; }
+        public Dictionary<EEngine, float> TypeDamage { get; set; }
         protected override void Load()
         {
             Instance = this;
             Rocket.Core.Logging.Logger.Log("Support: JonHosting.com");
             VehicleManager.onExitVehicleRequested += ExitVehicleRequestHandler;
             Rocket.Core.Logging.Logger.Log("Loaded!");
+            TypeDamage = Configuration.Instance.EngineDamageMultiplier.ToDictionary(g => g.Engine, g => g.DmgMultiplier);
         }
         protected override void Unload()
         {
@@ -23,6 +26,7 @@ namespace JHVehicle
 
         public void ExitVehicleRequestHandler(Player player, InteractableVehicle vehicle, ref bool shouldAllow, ref Vector3 pendingLocation, ref float pendingYaw)
         {
+            if (!TypeDamage.TryGetValue(vehicle.asset.engine, out float DmgMulti)) return;
             float speed = vehicle.ReplicatedSpeed;
             if (Instance.Configuration.Instance.InvertIfBelow != 0 && speed < Instance.Configuration.Instance.InvertIfBelow) speed = -speed;
             if (speed > Configuration.Instance.MinSpeed)
@@ -81,7 +85,7 @@ namespace JHVehicle
                     if (broke) player.life.breakLegs();
                     if (bleed) P.Bleeding = true;
                 }
-                float dmg = speed * Configuration.Instance.Multiplier;
+                float dmg = speed * DmgMulti;
                 if (Configuration.Instance.StaminaBeforeHealth)
                 {
                     float dmga = P.Stamina - dmg;
