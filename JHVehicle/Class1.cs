@@ -1,4 +1,5 @@
-﻿using SDG.Unturned;
+﻿using Rocket.Unturned.Chat;
+using SDG.Unturned;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -23,6 +24,10 @@ namespace JHVehicle
             VehicleManager.onExitVehicleRequested -= ExitVehicleRequestHandler;
             Rocket.Core.Logging.Logger.Log("Unloaded!");
         }
+        public override Rocket.API.Collections.TranslationList DefaultTranslations => new Rocket.API.Collections.TranslationList
+        {
+            {"too_fast_to_exit", "You are going too fast to exit!" },
+        };
 
         public void ExitVehicleRequestHandler(Player player, InteractableVehicle vehicle, ref bool shouldAllow, ref Vector3 pendingLocation, ref float pendingYaw)
         {
@@ -32,6 +37,12 @@ namespace JHVehicle
             if (speed > Configuration.Instance.MinSpeed)
             {
                 Rocket.Unturned.Player.UnturnedPlayer P = Rocket.Unturned.Player.UnturnedPlayer.FromPlayer(player);
+                if (speed > Configuration.Instance.MaxSpeedToExit)
+                {
+                    shouldAllow = false;
+                    UnturnedChat.Say(P, Instance.Translate("too_fast_to_exit"));
+                    return;
+                }
 #if DEBUG
             Rocket.Unturned.Chat.UnturnedChat.Say(P, "Speed: "+vehicle.speed+", "+vehicle.physicsSpeed+", "+vehicle.spedometer+" kph");
 #endif
